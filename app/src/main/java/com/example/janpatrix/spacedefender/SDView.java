@@ -9,6 +9,8 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
+import java.util.ArrayList;
+
 /**
  * Created by janpatrix on 12.03.2018.
  */
@@ -20,6 +22,8 @@ public class SDView extends SurfaceView implements Runnable {
     private Paint paint;
     private Canvas canvas;
     private SurfaceHolder holder;
+    public ArrayList<SpaceDust> dustList = new ArrayList<SpaceDust>();
+    private static final int NUM_DUST = 40;
 
     //Game Objects
     private PlayerShip player;
@@ -35,6 +39,11 @@ public class SDView extends SurfaceView implements Runnable {
         enemy1 = new EnemyShip(context, point);
         enemy2 = new EnemyShip(context, point);
         enemy3 = new EnemyShip(context, point);
+
+        for (int i = 0; i < NUM_DUST; i++){
+            SpaceDust spec = new SpaceDust(point);
+            dustList.add(spec);
+        }
     }
 
     @Override
@@ -51,11 +60,21 @@ public class SDView extends SurfaceView implements Runnable {
         enemy1.update(player.getSpeed());
         enemy2.update(player.getSpeed());
         enemy3.update(player.getSpeed());
+        for(SpaceDust sd : dustList){
+            sd.update(player.getSpeed());
+        }
     }
 
     private void draw() {
         if (holder.getSurface().isValid()) {
             canvas = holder.lockCanvas();
+
+            paint.setColor(Color.WHITE);
+
+            for (SpaceDust sd : dustList){
+                canvas.drawPoint(sd.getX(), sd.getY(), paint);
+            }
+
             canvas.drawColor(Color.argb(255, 0, 0, 0));
 
             canvas.drawBitmap(player.getBitmap(), player.getX(), player.getY(), paint);
