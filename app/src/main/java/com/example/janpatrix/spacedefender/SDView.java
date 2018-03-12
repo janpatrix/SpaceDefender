@@ -17,16 +17,24 @@ public class SDView extends SurfaceView implements Runnable {
 
     volatile boolean playing;
     private Thread gameThread = null;
-    private PlayerShip player;
     private Paint paint;
     private Canvas canvas;
     private SurfaceHolder holder;
+
+    //Game Objects
+    private PlayerShip player;
+    private EnemyShip enemy1;
+    private EnemyShip enemy2;
+    private EnemyShip enemy3;
 
     public SDView(Context context, Point point) {
         super(context);
         holder = getHolder();
         paint = new Paint();
         player = new PlayerShip(context, point);
+        enemy1 = new EnemyShip(context, point);
+        enemy2 = new EnemyShip(context, point);
+        enemy3 = new EnemyShip(context, point);
     }
 
     @Override
@@ -40,6 +48,9 @@ public class SDView extends SurfaceView implements Runnable {
 
     private void update() {
         player.update();
+        enemy1.update(player.getSpeed());
+        enemy2.update(player.getSpeed());
+        enemy3.update(player.getSpeed());
     }
 
     private void draw() {
@@ -48,6 +59,10 @@ public class SDView extends SurfaceView implements Runnable {
             canvas.drawColor(Color.argb(255, 0, 0, 0));
 
             canvas.drawBitmap(player.getBitmap(), player.getX(), player.getY(), paint);
+            canvas.drawBitmap(enemy1.getBitmap(), enemy1.getX(), enemy1.getY(), paint);
+            canvas.drawBitmap(enemy2.getBitmap(), enemy2.getX(), enemy2.getY(), paint);
+            canvas.drawBitmap(enemy3.getBitmap(), enemy3.getX(), enemy3.getY(), paint);
+
             holder.unlockCanvasAndPost(canvas);
         }
     }
