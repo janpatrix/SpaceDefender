@@ -4,6 +4,8 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Point;
+import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
@@ -20,12 +22,11 @@ public class SDView extends SurfaceView implements Runnable {
     private Canvas canvas;
     private SurfaceHolder holder;
 
-    public SDView(Context context) {
+    public SDView(Context context, Point point) {
         super(context);
         holder = getHolder();
         paint = new Paint();
-        player = new PlayerShip(context);
-
+        player = new PlayerShip(context, point);
     }
 
     @Override
@@ -52,9 +53,9 @@ public class SDView extends SurfaceView implements Runnable {
     }
 
     private void control() {
-        try{
+        try {
             gameThread.sleep(17);
-        } catch (InterruptedException e){
+        } catch (InterruptedException e) {
 
         }
     }
@@ -74,5 +75,18 @@ public class SDView extends SurfaceView implements Runnable {
         gameThread.start();
     }
 
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        switch (event.getAction() & MotionEvent.ACTION_MASK){
+            case MotionEvent.ACTION_UP:
+                player.stopBoosting();
 
+                break;
+
+            case MotionEvent.ACTION_DOWN:
+                player.setBoosting();
+                break;
+        }
+        return true;
+    }
 }

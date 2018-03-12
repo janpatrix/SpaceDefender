@@ -1,7 +1,9 @@
 package com.example.janpatrix.spacedefender;
 
 import android.app.Activity;
+import android.graphics.Point;
 import android.os.Bundle;
+import android.view.Display;
 
 public class GameActivity extends Activity {
 
@@ -9,7 +11,11 @@ public class GameActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        gameView = new SDView(this);
+        Display display = getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+
+        gameView = new SDView(this, size);
         setContentView(gameView);
     }
 
