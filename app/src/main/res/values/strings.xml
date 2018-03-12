@@ -1,3 +1,5 @@
 <resources>
-    <string name="app_name">Space Defender</string>
+    <string name="app_name">space defender</string>
+    <string name="tv_highScore">high score: 99999</string>
+    <string name="btn_play">play</string>
 </resources>
